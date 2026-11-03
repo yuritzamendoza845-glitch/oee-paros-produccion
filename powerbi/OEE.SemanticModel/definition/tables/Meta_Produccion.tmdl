@@ -1,0 +1,42 @@
+table Meta_Produccion
+	lineageTag: 7139d416-f145-4abf-b644-0e3bc2c177d9
+
+	column maquina_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0fdfdc98-65cb-4ee8-ae58-4da1bbefd664
+		summarizeBy: none
+		sourceColumn: maquina_id
+
+	column referencia_id
+		dataType: int64
+		formatString: 0
+		lineageTag: c5c66c12-dce8-4e74-8abe-c2382d309756
+		summarizeBy: none
+		sourceColumn: referencia_id
+
+	column meta_pacas_hora
+		dataType: double
+		formatString: 0.00
+		lineageTag: 77583eb4-e9d6-4c8e-b1f2-fe794f40651f
+		summarizeBy: none
+		sourceColumn: meta_pacas_hora
+
+	column origen
+		dataType: string
+		lineageTag: 6342b24d-dd3b-4fea-967e-eb8c29e80c98
+		summarizeBy: none
+		sourceColumn: origen
+
+	partition Meta_Produccion = m
+		mode: import
+		source =
+				let
+					Datos = Text.Combine({
+						"hZO9jsIwEITfJTVaef/8UyJBQYF00l2H0L3/W2B7AxRkQpFN4U+T2Rnndlt4OSypP8xUSn+ff/8u1+Pp+P/T0nI/BCBjcKXMkLDQyBkSQ72SNgSo91EInw9pTqQGidpHpgo9zI+XHcAkFvUKCY9FHWuU8Fl9i5A1b1cyRYCO4YUcEjYbyZS2AH122k0IAmRGkRSdR12J0TlzfMGgAsuUsAYttJ0rMQCdRkjhEvMuVJzCvFOV4BLRplCqkMhBCPTgHB42AXv/XqwIkC8CETWDMuwdNUNA1iAaBPIXhTVqhi6fWUPAQiEXCOy2Ya829rL0FJfOIRB1fQrcHw=="}),
+					Fuente = Json.Document(Binary.Decompress(Binary.FromText(Datos, BinaryEncoding.Base64), Compression.Deflate)),
+					Encabezados = Table.FromRows(Fuente, {"maquina_id", "referencia_id", "meta_pacas_hora", "origen"}),
+					Tipos = Table.TransformColumnTypes(Encabezados, {{"maquina_id", Int64.Type}, {"referencia_id", Int64.Type}, {"meta_pacas_hora", type number}, {"origen", type text}}, "en-US")
+				in
+					Tipos
+

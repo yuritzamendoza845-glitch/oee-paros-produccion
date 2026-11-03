@@ -1,0 +1,111 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "v19",
+  "position": {
+    "x": 0,
+    "y": 160.5494229384077,
+    "z": 0,
+    "height": 338.93767064774954,
+    "width": 639.453257173487,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_Maquina"
+                    }
+                  },
+                  "Property": "Máquina"
+                }
+              },
+              "queryRef": "Dim_Maquina.Máquina",
+              "nativeQueryRef": "Máquina",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "MTBF (horas operativas entre fallas)"
+                }
+              },
+              "queryRef": "_Medidas.MTBF (horas operativas entre fallas)",
+              "nativeQueryRef": "MTBF (horas operativas entre fallas)"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'MTBF por máquina'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "17cad300ca12a59e16ce",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim_Maquina"
+              }
+            },
+            "Property": "Máquina"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "02526a359900b6c2d23d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "MTBF (horas operativas entre fallas)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

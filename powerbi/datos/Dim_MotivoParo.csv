@@ -1,0 +1,19 @@
+motivo_id,Motivo,Área de impacto,Etiqueta,Es planificado,Categoría OEE
+1,Falla del sistema electromecánico y/o de control,Mantenimiento,[01] Falla del sistema electromecánico y/o de control,False,AVERIA
+2,Espera de soporte de mantenimiento,Mantenimiento,[02] Espera de soporte de mantenimiento,False,ESPERA
+3,"Novedad en los sistemas de potencia (aire, energía, vapor)",Mantenimiento,"[03] Novedad en los sistemas de potencia (aire, energía, vapor)",False,AVERIA
+4,Mantenimiento preventivo,Mantenimiento,[04] Mantenimiento preventivo,False,AVERIA
+5,Ajuste operativo,Producción,[05] Ajuste operativo,False,AJUSTE
+6,Limpieza por derrame operativo / tiempo sin reportar,Producción,[06] Limpieza por derrame operativo / tiempo sin reportar,False,AJUSTE
+7,Alistamiento de máquina / cambio de referencia,Producción,[07] Alistamiento de máquina / cambio de referencia,False,CAMBIO_REFERENCIA
+8,Capacitación / reunión,Producción,[08] Capacitación / reunión,False,ORGANIZACIONAL
+9,Falta de operario,Producción,[09] Falta de operario,False,ORGANIZACIONAL
+10,Paro por ventaja / evacuación / calidad,Producción,[10] Paro por ventaja / evacuación / calidad,False,AJUSTE
+11,Reproceso,Producción,[11] Reproceso,False,CALIDAD
+12,Materia prima defectuosa,Calidad,[12] Materia prima defectuosa,False,CALIDAD
+13,En espera por el aval del laboratorio de microbiología,Calidad,[13] En espera por el aval del laboratorio de microbiología,False,ESPERA
+14,Falta de materia prima,Almacén de materias primas,[14] Falta de materia prima,False,ABASTECIMIENTO
+15,"Cambio de insumos (roscadores, o'ring, etiquetas)",Paro programado,"[15] Cambio de insumos (roscadores, o'ring, etiquetas)",True,PLANIFICADO
+16,Alimentación y aseo de la zona de trabajo y la máquina,Paro programado,[16] Alimentación y aseo de la zona de trabajo y la máquina,True,PLANIFICADO
+17,Pausa activa,Paro programado,[17] Pausa activa,True,PLANIFICADO
+18,Desinfección,Paro programado,[18] Desinfección,True,PLANIFICADO

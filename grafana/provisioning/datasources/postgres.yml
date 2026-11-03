@@ -1,0 +1,15 @@
+apiVersion: 1
+datasources:
+  - name: PostgreSQL-OEE
+    uid: pg-oee
+    type: grafana-postgresql-datasource   # en Grafana < 10.3 use: postgres
+    access: proxy
+    url: ${OEE_DB_HOST}:5432
+    user: oee_lectura                      # rol de SOLO lectura (sql/05_roles.sql)
+    jsonData:
+      database: oee
+      sslmode: require
+      postgresVersion: 1500
+      timescaledb: false
+    secureJsonData:
+      password: ${OEE_DB_PASSWORD}

@@ -1,0 +1,29 @@
+table Dim_Operaria
+	lineageTag: e0dd949c-cf29-4e75-a323-5b54f1e1ac2c
+
+	column operario_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4a5d55b4-81fd-42bc-8126-69a4462056ac
+		summarizeBy: none
+		sourceColumn: operario_id
+
+	column Operaria/o
+		dataType: string
+		lineageTag: b5204ffb-ce37-49c5-b566-2a33842292ef
+		summarizeBy: none
+		sourceColumn: Operaria/o
+
+	partition Dim_Operaria = m
+		mode: import
+		source =
+				let
+					Datos = Text.Combine({
+						"RZDBTsMwDIZfJep5QiTdgB3HqNihExKbkKpqB2/1wSJKRdIixNMTxwm95ftjx1/c99V9tapO5NQA01hdVn2lY7Cz+ANu8JASw4mTc53Og0fB9T+q17uUbGLybMF9zTRJzYMkIcFjhD14K1dPTJ7CRPn5bQxeCDJplmtsZEfSrtmu8fSZC0xBdZDxmgWbMGGeoNmw+UZLTpj9DmgxI8u1SAMJsl47enSgzvlBdmxnCvm9bcJf9S7XhhWPQGVVOqG/lfnGLIHa555aMsol64LqLRdsSpIXYVjzODq6ZWbPE14hbg7kJ4Y9zzAtPWz6gX7pqtm1wxDQxVk7mVWzcVf2X7NuN/PKQXWx4vIH"}),
+					Fuente = Json.Document(Binary.Decompress(Binary.FromText(Datos, BinaryEncoding.Base64), Compression.Deflate)),
+					Encabezados = Table.FromRows(Fuente, {"operario_id", "Operaria/o"}),
+					Tipos = Table.TransformColumnTypes(Encabezados, {{"operario_id", Int64.Type}, {"Operaria/o", type text}}, "en-US")
+				in
+					Tipos
+

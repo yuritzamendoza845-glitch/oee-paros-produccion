@@ -1,0 +1,35 @@
+table Dim_Maquina
+	lineageTag: d2f9d875-d704-43c9-af81-a9d865840e23
+
+	column maquina_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 85060332-8edc-4885-9512-c13f7aa688bb
+		summarizeBy: none
+		sourceColumn: maquina_id
+
+	column Máquina
+		dataType: string
+		lineageTag: d750a75f-4ba9-432d-a20d-f50210de91a2
+		summarizeBy: none
+		sourceColumn: Máquina
+
+	column linea
+		dataType: string
+		lineageTag: e191b51b-e551-4b1d-ae1b-b6158ab73f60
+		summarizeBy: none
+		sourceColumn: linea
+
+	partition Dim_Maquina = m
+		mode: import
+		source =
+				let
+					Datos = Text.Combine({
+						"i45WMlTSUQrLzMvMyS+OR2IrVCqUHF6ZW5BalFisFKsTrWSEpM4IjzpjJHXGeNSZIKkzwaUuFgA="}),
+					Fuente = Json.Document(Binary.Decompress(Binary.FromText(Datos, BinaryEncoding.Base64), Compression.Deflate)),
+					Encabezados = Table.FromRows(Fuente, {"maquina_id", "Máquina", "linea"}),
+					Tipos = Table.TransformColumnTypes(Encabezados, {{"maquina_id", Int64.Type}, {"Máquina", type text}, {"linea", type text}}, "en-US")
+				in
+					Tipos
+

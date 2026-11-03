@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "v20",
+  "position": {
+    "x": 639.453257173487,
+    "y": 160.5494229384077,
+    "z": 0,
+    "height": 338.93767064774954,
+    "width": 640.82547446355886,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Fact_HorasNoProgramadas"
+                    }
+                  },
+                  "Property": "causa"
+                }
+              },
+              "queryRef": "Fact_HorasNoProgramadas.causa",
+              "nativeQueryRef": "causa",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Horas No Programadas"
+                }
+              },
+              "queryRef": "_Medidas.Horas No Programadas",
+              "nativeQueryRef": "Horas No Programadas"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Medidas"
+                  }
+                },
+                "Property": "Horas No Programadas"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Causa de las horas no programadas'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "2cc37be2cb78b593b84b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Fact_HorasNoProgramadas"
+              }
+            },
+            "Property": "causa"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a58abf7e937d1420516b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "Horas No Programadas"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+turno_id,Turno,horas_nominales
+0,Sin dato,
+1,6am-2pm (Turno 1),8.0
+2,2pm-10pm (Turno 2),8.0
+3,10pm-6am (Turno 3),8.0
+4,6am-4:30pm,10.5
+5,6am-6pm,12.0
+6,6pm-6am,12.0

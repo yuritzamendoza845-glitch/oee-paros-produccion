@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+*.xlsm
+*.xlsx
+.venv/
+.DS_Store
+Thumbs.db
+
+# Power BI: caché local de Power BI Desktop
+powerbi/**/.pbi/

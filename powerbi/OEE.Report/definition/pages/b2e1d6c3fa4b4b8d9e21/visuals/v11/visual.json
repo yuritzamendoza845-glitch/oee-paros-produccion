@@ -1,0 +1,208 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "v11",
+  "position": {
+    "x": 580.44791370039707,
+    "y": 0,
+    "z": 0,
+    "height": 430,
+    "width": 700,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_MotivoParo"
+                    }
+                  },
+                  "Property": "Etiqueta"
+                }
+              },
+              "queryRef": "Dim_MotivoParo.Etiqueta",
+              "nativeQueryRef": "Etiqueta"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Horas Paro No Planificado"
+                }
+              },
+              "queryRef": "_Medidas.Horas Paro No Planificado",
+              "nativeQueryRef": "Horas Paro No Planificado"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "% Paro No Planificado"
+                }
+              },
+              "queryRef": "_Medidas.% Paro No Planificado",
+              "nativeQueryRef": "% Paro No Planificado"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "% Acumulado Pareto"
+                }
+              },
+              "queryRef": "_Medidas.% Acumulado Pareto",
+              "nativeQueryRef": "% Acumulado Pareto"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Clase ABC Pareto"
+                }
+              },
+              "queryRef": "_Medidas.Clase ABC Pareto",
+              "nativeQueryRef": "Clase ABC Pareto"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Medidas"
+                  }
+                },
+                "Property": "Horas Paro No Planificado"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Tabla ABC'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "065ee88f198ed40b38a6",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim_MotivoParo"
+              }
+            },
+            "Property": "Etiqueta"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "38025ebf06c5b5ca6501",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "Horas Paro No Planificado"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "30cd569b0bd047c6d8a4",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "% Paro No Planificado"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e5f16f342d43de1c760d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "% Acumulado Pareto"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "72818983c41d680c6901",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "Clase ABC Pareto"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

@@ -1,0 +1,154 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1151.3095232510573,
+            "y": 508.50410552226072
+          },
+          "nodeIndex": "_Medidas",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 306.03825677278195,
+            "y": 686.53720546567365
+          },
+          "nodeIndex": "Dim_Fecha",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 594.91239951817977,
+            "y": 654.35831564862133
+          },
+          "nodeIndex": "Dim_Maquina",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 917.30952325105727,
+            "y": 207.82588060933404
+          },
+          "nodeIndex": "Dim_MotivoParo",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 603.79369965887054,
+            "y": 90.274178875989946
+          },
+          "nodeIndex": "Dim_Operaria",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 314.30700464583646,
+            "y": -50
+          },
+          "nodeIndex": "Dim_Referencia",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 482.03346535340665
+          },
+          "nodeIndex": "Dim_Turno",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 473.27136423871349,
+            "y": 1043.0082110445214
+          },
+          "nodeIndex": "Fact_HorasNoProgramadas",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 627.32822449226046,
+            "y": 272.95384930857381
+          },
+          "nodeIndex": "Fact_Paros",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 338.43557780226013,
+            "y": 272.99302127147212
+          },
+          "nodeIndex": "Fact_Turno",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1435.3095232510573,
+            "y": 570.50410552226072
+          },
+          "nodeIndex": "Meta_Produccion",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas las tablas",
+  "defaultDiagram": "Todas las tablas"
+}

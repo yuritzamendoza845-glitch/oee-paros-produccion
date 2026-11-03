@@ -1,0 +1,232 @@
+table _Medidas
+	lineageTag: d159b487-3389-460d-b763-4d44248d01f6
+
+	measure 'Minutos Programados' = SUM ( Fact_Turno[min_programados] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: 1edc0eae-f54a-4fac-a5a0-1f13cfc827d6
+
+	measure 'Minutos Paro Planificado' = SUM ( Fact_Turno[min_paro_planificado] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: 3b5869ce-17be-46f9-9221-c5bf6cad8782
+
+	/// Programado menos paros planificados
+	measure 'Minutos Planificados' = SUM ( Fact_Turno[min_planificados] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: 8c4bf88b-1840-4dec-b757-dc8a0ee7ccb3
+
+	measure 'Minutos Paro No Planificado' = SUM ( Fact_Turno[min_paro_no_planificado] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: 2909ea4b-1c58-496b-ae8d-2d8ff0f57628
+
+	/// Planificado menos paros no planificados
+	measure 'Minutos Operativos' = SUM ( Fact_Turno[min_operativos] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: a8e2ad83-3d5e-476b-901d-57e520c413ce
+
+	measure 'Pacas Producidas' = SUM ( Fact_Turno[pacas_producidas] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: 477cacfd-7da8-463e-b6d1-047cd1ba97de
+
+	measure 'Pacas Buenas' = SUM ( Fact_Turno[pacas_buenas] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: 38b257e1-0db9-40c9-8393-1495f36237c7
+
+	/// Tiempo operativo / 60 x meta pacas por hora
+	measure 'Pacas Ideales Operativas' = SUM ( Fact_Turno[pacas_ideales_operativas] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: aa338b6f-d254-47f3-8eb0-2a4c16ea6fc9
+
+	/// Tiempo planificado / 60 x meta pacas por hora
+	measure 'Pacas Ideales Planificadas' = SUM ( Fact_Turno[pacas_ideales_planificadas] )
+		formatString: #,0
+		displayFolder: 1 Bloques base
+		lineageTag: 7eda3c35-6c23-4f8c-b348-bdb6bb59f3f7
+
+	/// Operativo / planificado
+	measure 'Disponibilidad %' = DIVIDE ( [Minutos Operativos], [Minutos Planificados] )
+		formatString: 0.0%
+		displayFolder: 2 OEE
+		lineageTag: 08f82867-4072-45fe-b0ef-a743a94f9cef
+
+	/// Producidas / ideales operativas
+	measure 'Rendimiento %' = DIVIDE ( [Pacas Producidas], [Pacas Ideales Operativas] )
+		formatString: 0.0%
+		displayFolder: 2 OEE
+		lineageTag: 420e7a66-659d-46c0-ba9a-a58fd9506d40
+
+	/// Buenas / producidas (el libro no registra no conformes: 100 %)
+	measure 'Calidad %' = DIVIDE ( [Pacas Buenas], [Pacas Producidas] )
+		formatString: 0.0%
+		displayFolder: 2 OEE
+		lineageTag: 08f3df57-31c7-4505-8e84-abd5543b94d0
+
+	/// Pacas buenas / pacas ideales planificadas (igual que Grafana y las vistas SQL). No es el producto A x P x Q agregado.
+	measure 'OEE %' = DIVIDE ( [Pacas Buenas], [Pacas Ideales Planificadas] )
+		formatString: 0.0%
+		displayFolder: 2 OEE
+		lineageTag: 4f706c6c-8948-481e-98a3-4a14336002d2
+
+	/// Informativa: A x P x Q agregado menos OEE, en puntos. Es distinta de 0 porque la meta de pacas/hora cambia entre referencias.
+	measure 'Diferencia A x P x Q vs OEE (pp)' = ( [Disponibilidad %] * [Rendimiento %] * [Calidad %] - [OEE %] ) * 100
+		formatString: 0.0
+		displayFolder: 2 OEE
+		lineageTag: 549469d1-e5f7-45a5-9cd0-bd6b49952007
+
+	/// PARAMETRO: reemplazar por la meta oficial de la planta
+	measure 'OEE Meta' = 0.75
+		formatString: 0%
+		displayFolder: 3 Meta y semáforo
+		lineageTag: 876d4332-8411-433b-91e5-5d472eb6fd3d
+
+	measure 'Brecha vs Meta (pp)' = ( [OEE %] - [OEE Meta] ) * 100
+		formatString: 0.0
+		displayFolder: 3 Meta y semáforo
+		lineageTag: 771eb0e3-692f-4c9d-948a-87f110223fac
+
+	measure 'Semáforo OEE' =
+			SWITCH ( TRUE (),
+				ISBLANK ( [OEE %] ), BLANK (),
+				[OEE %] >= [OEE Meta], "🟢",
+				[OEE %] >= [OEE Meta] - 0.10, "🟡",
+				"🔴" )
+		displayFolder: 3 Meta y semáforo
+		lineageTag: 9820925a-730e-4186-9649-c5fd6a51c6fe
+
+	measure 'OEE % Mes Anterior' = CALCULATE ( [OEE %], DATEADD ( Dim_Fecha[fecha], -1, MONTH ) )
+		formatString: 0.0%
+		displayFolder: 4 Tiempo
+		lineageTag: 5bc98d71-53b9-46e9-bad1-e0743127e111
+
+	measure 'OEE % Mismo Periodo Año Anterior' = CALCULATE ( [OEE %], SAMEPERIODLASTYEAR ( Dim_Fecha[fecha] ) )
+		formatString: 0.0%
+		displayFolder: 4 Tiempo
+		lineageTag: 099c171b-bc50-4b14-b2d1-e52f05eef2e4
+
+	measure 'OEE % Acumulado Año (YTD)' = CALCULATE ( [OEE %], DATESYTD ( Dim_Fecha[fecha] ) )
+		formatString: 0.0%
+		displayFolder: 4 Tiempo
+		lineageTag: 028d5c81-c112-4007-9585-7747c8acd398
+
+	measure 'OEE % Media Móvil 4 Semanas' = CALCULATE ( [OEE %], DATESINPERIOD ( Dim_Fecha[fecha], MAX ( Dim_Fecha[fecha] ), -28, DAY ) )
+		formatString: 0.0%
+		displayFolder: 4 Tiempo
+		lineageTag: d458b38b-85d9-490f-ba43-082a03ddf58f
+
+	/// Los datos terminan el 28/03/2025
+	measure 'Última Fecha con Datos' = MAX ( Fact_Turno[fecha] )
+		formatString: dd/mm/yyyy
+		displayFolder: 4 Tiempo
+		lineageTag: f807702e-f772-45e1-85cd-7543004a3af3
+
+	measure 'Horas de Paro' = SUM ( Fact_Paros[horas] )
+		formatString: #,0.0
+		displayFolder: 5 Paros y Pareto
+		lineageTag: 18973963-d7ff-4d95-8df8-0bdfe4d97ae3
+
+	measure 'Horas Paro No Planificado' = CALCULATE ( [Horas de Paro], Dim_MotivoParo[Es planificado] = FALSE () )
+		formatString: #,0.0
+		displayFolder: 5 Paros y Pareto
+		lineageTag: d067837e-d25e-411f-b8e4-91efedcdde73
+
+	measure 'Horas Paro Planificado' = CALCULATE ( [Horas de Paro], Dim_MotivoParo[Es planificado] = TRUE () )
+		formatString: #,0.0
+		displayFolder: 5 Paros y Pareto
+		lineageTag: b9054cfe-9aa7-4d21-82fe-2fe76966989f
+
+	/// Participación sobre lo visible en el visual
+	measure '% Paro No Planificado' =
+			DIVIDE ( [Horas Paro No Planificado],
+				CALCULATE ( [Horas Paro No Planificado], ALLSELECTED ( Dim_MotivoParo ) ) )
+		formatString: 0.0%
+		displayFolder: 5 Paros y Pareto
+		lineageTag: ae583d24-fca7-4a28-b104-cac65e6ccfba
+
+	/// Usar la columna Etiqueta en el eje
+	measure '% Acumulado Pareto' =
+			VAR _actual = [Horas Paro No Planificado]
+			VAR _tabla  = ALLSELECTED ( Dim_MotivoParo[Etiqueta] )
+			VAR _acum   =
+				SUMX (
+					FILTER ( _tabla, CALCULATE ( [Horas Paro No Planificado] ) >= _actual ),
+					CALCULATE ( [Horas Paro No Planificado] ) )
+			VAR _total  = SUMX ( _tabla, CALCULATE ( [Horas Paro No Planificado] ) )
+			RETURN
+				IF ( ISBLANK ( _actual ), BLANK (), DIVIDE ( _acum, _total ) )
+		formatString: 0.0%
+		displayFolder: 5 Paros y Pareto
+		lineageTag: e34a88ab-21e2-41bf-9fac-07692c67986a
+
+	/// A hasta 80 %, B hasta 95 %, C el resto
+	measure 'Clase ABC Pareto' =
+			VAR _a = [% Acumulado Pareto]
+			VAR _p = [% Paro No Planificado]
+			RETURN IF ( ISBLANK ( _a ), BLANK (), IF ( _a - _p < 0.80, "A", IF ( _a - _p < 0.95, "B", "C" ) ) )
+		displayFolder: 5 Paros y Pareto
+		lineageTag: 74062f56-1cf4-49ab-beb9-e6a4a46e9c92
+
+	measure 'Eventos de Falla' = CALCULATE ( DISTINCTCOUNT ( Fact_Paros[detalle_id] ), Dim_MotivoParo[Categoría OEE] = "AVERIA" )
+		formatString: #,0
+		displayFolder: 6 Confiabilidad
+		lineageTag: 4329ae79-707d-4cef-b9c8-5253a1284548
+
+	measure 'MTTR (min por falla)' = DIVIDE ( CALCULATE ( SUM ( Fact_Paros[minutos] ), Dim_MotivoParo[Categoría OEE] = "AVERIA" ), [Eventos de Falla] )
+		formatString: #,0.0
+		displayFolder: 6 Confiabilidad
+		lineageTag: 130c30cc-247c-48c6-a6ef-2f6f0724df41
+
+	measure 'MTBF (horas operativas entre fallas)' = DIVIDE ( [Minutos Operativos] / 60, [Eventos de Falla] )
+		formatString: #,0.0
+		displayFolder: 6 Confiabilidad
+		lineageTag: 1a20fbdc-1da1-499e-acdf-850a64cf4a00
+
+	measure 'Horas No Programadas' = SUM ( Fact_HorasNoProgramadas[horas_no_programadas] )
+		formatString: #,0
+		displayFolder: 7 TEEP
+		lineageTag: 838dc58c-922b-4f31-abae-1a98be9e64b2
+
+	measure 'Horas Programadas' = SUM ( Fact_HorasNoProgramadas[horas_programadas] )
+		formatString: #,0
+		displayFolder: 7 TEEP
+		lineageTag: c3b4e27a-c0a4-4891-878a-88df2d1932e7
+
+	/// Programadas / (programadas + no programadas)
+	measure 'Utilización Calendario %' = DIVIDE ( [Horas Programadas], [Horas Programadas] + [Horas No Programadas] )
+		formatString: 0.0%
+		displayFolder: 7 TEEP
+		lineageTag: a177271d-e0dd-4110-97cb-b05d48d61846
+
+	/// OEE x utilización de calendario
+	measure 'TEEP %' = [OEE %] * [Utilización Calendario %]
+		formatString: 0.0%
+		displayFolder: 7 TEEP
+		lineageTag: 01bce93f-497f-4624-8531-f92245375532
+
+	/// La meta se estimó (P90); no es la oficial
+	measure '% Registros con Meta Estimada' = DIVIDE ( CALCULATE ( COUNTROWS ( Fact_Turno ), Fact_Turno[origen_meta] = "ESTIMADA_P90" ), COUNTROWS ( Fact_Turno ) )
+		formatString: 0.0%
+		displayFolder: 8 Calidad del dato
+		lineageTag: 731235f9-9701-417b-a838-220d86976740
+
+	column Columna
+		dataType: string
+		isHidden
+		lineageTag: 6636531f-2f2d-4026-a4b2-67b0e1045d99
+		summarizeBy: none
+		sourceColumn: Columna
+
+	partition _Medidas = m
+		mode: import
+		source =
+				let
+					Origen = #table(type table [Columna = text], {{"-"}})
+				in
+					Origen
+

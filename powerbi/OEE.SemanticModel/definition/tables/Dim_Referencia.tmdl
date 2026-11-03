@@ -1,0 +1,49 @@
+table Dim_Referencia
+	lineageTag: 40339580-6342-4b60-8bba-9077721254fd
+
+	column referencia_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e53f7aa6-3d00-4b1a-a114-bde58910ace5
+		summarizeBy: none
+		sourceColumn: referencia_id
+
+	column Referencia
+		dataType: string
+		lineageTag: b7cdf457-cccc-43e0-bdc5-bee2b068e9dc
+		summarizeBy: none
+		sourceColumn: Referencia
+
+	column Marca
+		dataType: string
+		lineageTag: e0915722-2505-4f01-9486-10cc623b77e5
+		summarizeBy: none
+		sourceColumn: Marca
+
+	column 'Volumen (cc)'
+		dataType: double
+		formatString: 0
+		lineageTag: 3eb3937e-f12a-47aa-9d95-2b5f6602ab3e
+		summarizeBy: none
+		sourceColumn: Volumen (cc)
+
+	column Colores
+		dataType: int64
+		formatString: 0
+		lineageTag: 90558c91-e569-47bf-8184-52808d9ca8e4
+		summarizeBy: none
+		sourceColumn: Colores
+
+	partition Dim_Referencia = m
+		mode: import
+		source =
+				let
+					Datos = Text.Combine({
+						"fZbNjpswEMdfBXFqpRzwByY5dtuetlutlFUv0R4o0NYSwpEh1fa5+gh9sdrGgGfscCHWzP834/FMDJdLXuSH/CyHrK0nlR+GW99vj9fDJSfG/6FXTat0RmnTZO9Eo/r3m9WsKDUPkVs59Q7Vr3pCs4CwjgUh1DEsZsQ9ZM7Creequ6FVETCbob60Dj3JjBWZVVer2hjND7OnUDmpMKuHbpw6XO5shHErs/pYT12r6x5vZLFD4mhWn266e8NyZ4Tak1l9HifZq+xRtiMmAhfkiK3GEaQEhJeScpOSRYp7FYb1fSIUikVK6+Panj728rrsIQhsrcsulsg8ku+pS6QWydh+J2IVRyV6NaixQnKRVPvYx1XMinRsN1lL7BOSi6Ta/5FcE6/xpq9ox5TMwjlkBXTBXDvki2zkVDfy39/BHF0G9hD44AlShkhK98jwMuCIRGVDMCzeZn+SY3atRzmpuHWBDx+HSKJih/Q5KwTilkIybCw9JlGxQ/qcdiKebroeVFyiM+OrssCASOvn+MzOxnPdRGJrQ1LqzLr51c01EGoHBBrdRsp8fTkwhqESpQHoNlOMIxBXD0lwBGUSFTukzykQiBsMybDBrJrdWk2JdMaKMtl5eJbDpHSTPJbNhY7lhECcDIDhC7FAYFQbIMPaOEFoVezkrLbh5Tb9eaqHH0q3+PpZ7PAS4sy57r3RzndeaNxOy/nPWH/vIsRZkdwe6IvSuovGylnRQHGB5CKp9rHtJLxoufZ0kRoT7CW3Q/BNDqakMXuzXx4PfT24v13SCr66+AnLvnY/tbpjBGhZONXv+EaxRlR7SaBYpLSmntf/"}),
+					Fuente = Json.Document(Binary.Decompress(Binary.FromText(Datos, BinaryEncoding.Base64), Compression.Deflate)),
+					Encabezados = Table.FromRows(Fuente, {"referencia_id", "Referencia", "Marca", "Volumen (cc)", "Colores"}),
+					Tipos = Table.TransformColumnTypes(Encabezados, {{"referencia_id", Int64.Type}, {"Referencia", type text}, {"Marca", type text}, {"Volumen (cc)", type number}, {"Colores", Int64.Type}}, "en-US")
+				in
+					Tipos
+

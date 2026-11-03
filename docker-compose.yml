@@ -1,0 +1,25 @@
+# Levanta PostgreSQL (con la base cargada) y Grafana (con el tablero ya provisionado).
+# Uso:  docker compose up -d   →   http://localhost:3000  (admin / admin)
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: oee
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports: ["5432:5432"]
+    volumes:
+      - ./database/base_datos_oee_postgres.sql:/docker-entrypoint-initdb.d/01_oee.sql:ro
+      - ./sql/05_roles.sql:/docker-entrypoint-initdb.d/02_roles.sql:ro
+
+  grafana:
+    image: grafana/grafana:latest
+    ports: ["3000:3000"]
+    environment:
+      OEE_DB_HOST: postgres
+      OEE_DB_PASSWORD: CAMBIAR_ME
+    volumes:
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/docker/postgres.yml:/etc/grafana/provisioning/datasources/postgres.yml:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    depends_on: [postgres]

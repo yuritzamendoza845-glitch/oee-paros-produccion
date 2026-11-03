@@ -1,0 +1,53 @@
+table Dim_MotivoParo
+	lineageTag: 2d4e8e71-b3b0-420c-b74e-eedfb96518ff
+
+	column motivo_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 9b4bff10-d3a2-4cb3-bef9-abec67058a5f
+		summarizeBy: none
+		sourceColumn: motivo_id
+
+	column Motivo
+		dataType: string
+		lineageTag: 8596a86e-6758-4eb8-9cd3-3a8a0a4a4040
+		summarizeBy: none
+		sourceColumn: Motivo
+
+	column 'Área de impacto'
+		dataType: string
+		lineageTag: 447c44b8-4850-4b93-86a2-888e9bafd545
+		summarizeBy: none
+		sourceColumn: Área de impacto
+
+	column Etiqueta
+		dataType: string
+		lineageTag: e43e7bc2-894e-4aac-81fd-7478d728d79b
+		summarizeBy: none
+		sourceColumn: Etiqueta
+
+	column 'Es planificado'
+		dataType: boolean
+		lineageTag: 0dfb596b-63e0-4d6b-b081-29d063383ecf
+		summarizeBy: none
+		sourceColumn: Es planificado
+
+	column 'Categoría OEE'
+		dataType: string
+		lineageTag: aadcd4c4-cad9-4bf9-ba76-90421c1b1102
+		summarizeBy: none
+		sourceColumn: Categoría OEE
+
+	partition Dim_MotivoParo = m
+		mode: import
+		source =
+				let
+					Datos = Text.Combine({
+						"pVVdT9swFP0rVl8GUqWR0hZ4DG2YMpUWFbaHVdF0cS/IKLaDnVSCf8PjHva0n9A/tmun6briotE9JY6vzzm+HyezWStqtVsXkOfA5pgzK2yJEhjmyEujJfLlixJcs6ePmgIY14o+53TmElSJSkiBqtS0nh1FGdsHiM5YpGf8NZmmcStrz1odWia2QOOwmNWFNiW6V7lF+lpEJ2P/dLJhTa6vkmnNekzLsV7gHOYMFcu1bW5hHUKhCYALYAcgDLYpBM398ie02QKI5jAo5zhj/wcZyE53m4kVBhf0IhbhnHQz9kZ8gKHnlg8VCWXa5XIVeWX0vOJcLH8pj9vLWCBqjff5y/VN4vH6tBwJWQh8Brq0obsbA3LjHPvISoGy0JQfxQy6uoEJcPYztidSQNeJW+ZUEFglxjXK8uWxEgoIh4O8Ff6jwTs0vlQBSSeUhneDNGoG8eV5Ovk+TS6SaTIerApw6nagAC5K8EQEZLBSK85tBacZeyO6oZpMP8Xj9Fs8SCfjeOR5zurt0k+LT6ERoUqf+dF+FfYGcnTkYMBoXyXXbfDg0oEL4NVaJYdc0Gy8ZoyOMvaO04HaRs7YplgYzdEG7hSRXW1u/ynIKB3Gwxqj4+epREMzWhghXQLuyNAqbcGXqBEwizpuyHZGBtGd4SSKYe1X7qZknLCA3DtoDreaWlqbunuk4EZTJ+XaOcQWOdnM/kABK4y6m40hN+/lR0YCX/5QG3u23rReTXejW7bPrit1HlOlBullmoxvJjVpz9+qGRehbCXJMA+Mthzm2qBtM/3BCHVPTlmKxwpLsIfrNjP6npyAAr2GnhuJ90PdmMqpuxpRP1+kg3i4ktavnUK6Tqzb74mBRY9Of7xnrfxtSwO38EA/OfexMYEdCvveNvZF3CX0xLNVFhhwssNd5CduvP6K2gXorGiI5KXUzc3whBDJg7bDQpDZbw=="}),
+					Fuente = Json.Document(Binary.Decompress(Binary.FromText(Datos, BinaryEncoding.Base64), Compression.Deflate)),
+					Encabezados = Table.FromRows(Fuente, {"motivo_id", "Motivo", "Área de impacto", "Etiqueta", "Es planificado", "Categoría OEE"}),
+					Tipos = Table.TransformColumnTypes(Encabezados, {{"motivo_id", Int64.Type}, {"Motivo", type text}, {"Área de impacto", type text}, {"Etiqueta", type text}, {"Es planificado", type logical}, {"Categoría OEE", type text}}, "en-US")
+				in
+					Tipos
+

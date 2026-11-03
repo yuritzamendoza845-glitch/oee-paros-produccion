@@ -1,0 +1,27 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: es-CO
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Fact_Turno","Fact_Paros","Fact_HorasNoProgramadas","Dim_Fecha","Dim_Maquina","Dim_Turno","Dim_Operaria","Dim_Referencia","Dim_MotivoParo","Meta_Produccion","_Medidas"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table Fact_Turno
+ref table Fact_Paros
+ref table Fact_HorasNoProgramadas
+ref table Dim_Fecha
+ref table Dim_Maquina
+ref table Dim_Turno
+ref table Dim_Operaria
+ref table Dim_Referencia
+ref table Dim_MotivoParo
+ref table Meta_Produccion
+ref table _Medidas
+

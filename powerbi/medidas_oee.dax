@@ -1,0 +1,110 @@
+// =====================================================================================
+// Medidas DAX — OEE (Disponibilidad × Rendimiento × Calidad) y análisis de paros
+// Tabla de medidas sugerida: _Medidas (tabla vacía "Enter data"). Formato de las %: 0.0%.
+// Todas las razones se calculan sobre SUMAS (nunca promedios de porcentajes): por eso el total
+// del reporte coincide con la vista oee.v_oee_diario de PostgreSQL.
+// =====================================================================================
+
+// ---------- Bloques base (minutos y pacas) -------------------------------------------
+Minutos Programados   = SUM ( Fact_Turno[min_programados] )
+Minutos Paro Planificado = SUM ( Fact_Turno[min_paro_planificado] )
+Minutos Planificados  = SUM ( Fact_Turno[min_planificados] )              // programado - paros planificados
+Minutos Paro No Planificado = SUM ( Fact_Turno[min_paro_no_planificado] )
+Minutos Operativos    = SUM ( Fact_Turno[min_operativos] )                // planificado - paros no planificados
+Pacas Producidas      = SUM ( Fact_Turno[pacas_producidas] )
+Pacas Buenas          = SUM ( Fact_Turno[pacas_buenas] )
+Pacas Ideales Operativas   = SUM ( Fact_Turno[pacas_ideales_operativas] )    // operativo/60 × meta
+Pacas Ideales Planificadas = SUM ( Fact_Turno[pacas_ideales_planificadas] )  // planificado/60 × meta
+
+// ---------- Los tres componentes del OEE ----------------------------------------------
+Disponibilidad % =
+    DIVIDE ( [Minutos Operativos], [Minutos Planificados] )
+
+Rendimiento % =
+    DIVIDE ( [Pacas Producidas], [Pacas Ideales Operativas] )
+
+Calidad % =
+    DIVIDE ( [Pacas Buenas], [Pacas Producidas] )
+
+OEE % =
+    DIVIDE ( [Pacas Buenas], [Pacas Ideales Planificadas] )
+    // Igual que Grafana y oee.v_oee_diario. OJO: NO es [Disponibilidad %] * [Rendimiento %] * [Calidad %]
+    // agregado: ese producto solo coincide fila por fila; al sumar, la meta de pacas/hora cambia entre
+    // referencias y el producto da un valor mayor (p. ej. 2024: 72,4 % contra 69,8 %).
+
+// Informativa (no es un control de igualdad): diferencia en puntos entre A x P x Q agregado y el OEE
+Diferencia A x P x Q vs OEE (pp) =
+    ( [Disponibilidad %] * [Rendimiento %] * [Calidad %] - [OEE %] ) * 100
+
+// ---------- Metas y semáforo -----------------------------------------------------------
+OEE Meta = 0.75            // PARÁMETRO: reemplazar por la meta oficial (referencia común de clase mundial: 85 %)
+Brecha vs Meta (pp) = ( [OEE %] - [OEE Meta] ) * 100
+Semáforo OEE =
+    SWITCH ( TRUE (),
+        ISBLANK ( [OEE %] ), BLANK (),
+        [OEE %] >= [OEE Meta], "🟢",
+        [OEE %] >= [OEE Meta] - 0.10, "🟡",
+        "🔴" )
+
+// ---------- Inteligencia de tiempo -----------------------------------------------------
+OEE % Mes Anterior =
+    CALCULATE ( [OEE %], DATEADD ( Dim_Fecha[fecha], -1, MONTH ) )
+OEE % Mismo Periodo Año Anterior =
+    CALCULATE ( [OEE %], SAMEPERIODLASTYEAR ( Dim_Fecha[fecha] ) )
+OEE % Acumulado Año (YTD) =
+    CALCULATE ( [OEE %], DATESYTD ( Dim_Fecha[fecha] ) )
+OEE % Media Móvil 4 Semanas =
+    CALCULATE ( [OEE %], DATESINPERIOD ( Dim_Fecha[fecha], MAX ( Dim_Fecha[fecha] ), -28, DAY ) )
+
+// ---------- Paros y Pareto (causa raíz) ------------------------------------------------
+Horas de Paro = SUM ( Fact_Paros[horas] )
+
+Horas Paro No Planificado =
+    CALCULATE ( [Horas de Paro], Dim_MotivoParo[Es planificado] = FALSE () )
+
+Horas Paro Planificado =
+    CALCULATE ( [Horas de Paro], Dim_MotivoParo[Es planificado] = TRUE () )
+
+// % individual sobre lo visible en el visual (respeta filtros de página/segmentadores)
+% Paro No Planificado =
+    DIVIDE ( [Horas Paro No Planificado],
+             CALCULATE ( [Horas Paro No Planificado], ALLSELECTED ( Dim_MotivoParo ) ) )
+
+// % acumulado de Pareto: suma de las causas que están igual o por encima en el ranking.
+// Funciona para cualquier eje: motivo, subcódigo, máquina, operaria…  (usar la columna Etiqueta en el eje)
+% Acumulado Pareto =
+VAR _actual = [Horas Paro No Planificado]
+VAR _tabla  = ALLSELECTED ( Dim_MotivoParo[Etiqueta] )
+VAR _acum   =
+    SUMX (
+        FILTER ( _tabla, CALCULATE ( [Horas Paro No Planificado] ) >= _actual ),
+        CALCULATE ( [Horas Paro No Planificado] ) )
+VAR _total  = SUMX ( _tabla, CALCULATE ( [Horas Paro No Planificado] ) )
+RETURN
+    IF ( ISBLANK ( _actual ), BLANK (), DIVIDE ( _acum, _total ) )
+
+Clase ABC Pareto =
+VAR _a = [% Acumulado Pareto]
+VAR _p = [% Paro No Planificado]
+RETURN IF ( ISBLANK ( _a ), BLANK (), IF ( _a - _p < 0.80, "A", IF ( _a - _p < 0.95, "B", "C" ) ) )
+
+// ---------- Confiabilidad (mantenimiento) ---------------------------------------------
+Eventos de Falla =
+    CALCULATE ( DISTINCTCOUNT ( Fact_Paros[detalle_id] ),
+                Dim_MotivoParo[Categoría OEE] = "AVERIA" )
+
+MTTR (min por falla) =
+    DIVIDE ( CALCULATE ( SUM ( Fact_Paros[minutos] ), Dim_MotivoParo[Categoría OEE] = "AVERIA" ), [Eventos de Falla] )
+
+MTBF (horas operativas entre fallas) =
+    DIVIDE ( [Minutos Operativos] / 60, [Eventos de Falla] )
+
+// ---------- Utilización de calendario (TEEP) ------------------------------------------
+Horas No Programadas = SUM ( Fact_HorasNoProgramadas[horas_no_programadas] )
+Horas Programadas    = SUM ( Fact_HorasNoProgramadas[horas_programadas] )
+Utilización Calendario % = DIVIDE ( [Horas Programadas], [Horas Programadas] + [Horas No Programadas] )
+TEEP % = [OEE %] * [Utilización Calendario %]      // Total Effective Equipment Performance
+
+// ---------- Transparencia de la meta ---------------------------------------------------
+% Registros con Meta Estimada =
+    DIVIDE ( CALCULATE ( COUNTROWS ( Fact_Turno ), Fact_Turno[origen_meta] = "ESTIMADA_P90" ), COUNTROWS ( Fact_Turno ) )

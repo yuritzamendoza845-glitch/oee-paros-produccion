@@ -1,0 +1,36 @@
+table Dim_Turno
+	lineageTag: 4610cd05-8dad-48f8-b587-71407ee4f292
+
+	column turno_id
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d6aaafcb-85ba-4058-9469-b0b9779e28dd
+		summarizeBy: none
+		sourceColumn: turno_id
+
+	column Turno
+		dataType: string
+		lineageTag: 842461c1-65cb-43a1-88bd-605279b56666
+		summarizeBy: none
+		sourceColumn: Turno
+
+	column horas_nominales
+		dataType: double
+		formatString: 0.0
+		lineageTag: 95dd5ad9-36cd-4d69-88ba-0ad4da426fd5
+		summarizeBy: none
+		sourceColumn: horas_nominales
+
+	partition Dim_Turno = m
+		mode: import
+		source =
+				let
+					Datos = Text.Combine({
+						"TY1JCoAwDAC/UnJSaEsXLeI39FY8CF4ErSL2/6aL2luYmSTWggAKw+rIMt8HUOe3baIWJFIz70ydO6lGf7mDyBpZxwUEr3BGx6T4A1UGGucgGV55A10GTf7Q9BqzWPM2mjYbk7DKCybgdPDD0wM="}),
+					Fuente = Json.Document(Binary.Decompress(Binary.FromText(Datos, BinaryEncoding.Base64), Compression.Deflate)),
+					Encabezados = Table.FromRows(Fuente, {"turno_id", "Turno", "horas_nominales"}),
+					Tipos = Table.TransformColumnTypes(Encabezados, {{"turno_id", Int64.Type}, {"Turno", type text}, {"horas_nominales", type number}}, "en-US")
+				in
+					Tipos
+

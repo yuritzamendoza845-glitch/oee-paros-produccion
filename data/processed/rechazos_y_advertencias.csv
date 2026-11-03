@@ -1,0 +1,58 @@
+fila_origen,regla,severidad,detalle
+939,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+1984,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+2007,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+2052,R06_PAROS_EXCEDEN_TURNO,WARNING,paros=43 min > turno=30 min (se carga marcado REVISAR)
+2404,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+2405,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+2414,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+2431,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+2508,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+2848,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3148,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3207,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3340,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3564,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3569,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3588,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3740,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3824,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3879,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+3880,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4071,R06_PAROS_EXCEDEN_TURNO,WARNING,paros=165 min > turno=120 min (se carga marcado REVISAR)
+4214,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4310,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4419,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4475,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4479,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4517,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4632,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4639,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4835,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4998,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+4999,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+5007,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+5008,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+5009,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+5024,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+5028,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+5043,R05_PACAS_FUERA_DE_RANGO,ERROR,"4320 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5048,R05_PACAS_FUERA_DE_RANGO,ERROR,"4644 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5049,R05_PACAS_FUERA_DE_RANGO,ERROR,"4128 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5070,R05_PACAS_FUERA_DE_RANGO,ERROR,"4536 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5071,R05_PACAS_FUERA_DE_RANGO,ERROR,"4608 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5079,R05_PACAS_FUERA_DE_RANGO,ERROR,"4416 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5080,R05_PACAS_FUERA_DE_RANGO,ERROR,"5184 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5089,R05_PACAS_FUERA_DE_RANGO,ERROR,"3552 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5094,R05_PACAS_FUERA_DE_RANGO,ERROR,"3552 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5095,R05_PACAS_FUERA_DE_RANGO,ERROR,"4136 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5096,R05_PACAS_FUERA_DE_RANGO,ERROR,"9417 'pacas' en 8.0h (probable unidad distinta, p.ej. unidades sueltas)"
+5103,R06_PAROS_EXCEDEN_TURNO,WARNING,paros=938 min > turno=480 min (se carga marcado REVISAR)
+5674,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+6380,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+6390,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+6651,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+6767,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+7238,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+7441,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)
+7985,R07_POSIBLE_DUPLICADO,WARNING,contenido idéntico repetido (copia #2)

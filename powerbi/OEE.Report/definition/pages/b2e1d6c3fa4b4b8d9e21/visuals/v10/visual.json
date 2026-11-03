@@ -1,0 +1,129 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.14.0/schema.json",
+  "name": "v10",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "height": 429.50401179249235,
+    "width": 566.72574079967842,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dim_MotivoParo"
+                    }
+                  },
+                  "Property": "Etiqueta"
+                }
+              },
+              "queryRef": "Dim_MotivoParo.Etiqueta",
+              "nativeQueryRef": "Etiqueta",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Horas Paro No Planificado"
+                }
+              },
+              "queryRef": "_Medidas.Horas Paro No Planificado",
+              "nativeQueryRef": "Horas Paro No Planificado"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_Medidas"
+                  }
+                },
+                "Property": "Horas Paro No Planificado"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Pareto de horas perdidas por código de paro'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "911778324e57b70b8088",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Dim_MotivoParo"
+              }
+            },
+            "Property": "Etiqueta"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "4490cf2293d063491e21",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Medidas"
+              }
+            },
+            "Property": "Horas Paro No Planificado"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

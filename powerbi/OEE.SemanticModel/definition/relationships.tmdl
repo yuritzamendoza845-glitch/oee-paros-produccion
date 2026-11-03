@@ -1,0 +1,52 @@
+relationship rel_01
+	fromColumn: Fact_Turno.fecha
+	toColumn: Dim_Fecha.fecha
+
+relationship rel_02
+	fromColumn: Fact_Turno.maquina_id
+	toColumn: Dim_Maquina.maquina_id
+
+relationship rel_03
+	fromColumn: Fact_Turno.turno_id
+	toColumn: Dim_Turno.turno_id
+
+relationship rel_04
+	fromColumn: Fact_Turno.operario_id
+	toColumn: Dim_Operaria.operario_id
+
+relationship rel_05
+	fromColumn: Fact_Turno.referencia_id
+	toColumn: Dim_Referencia.referencia_id
+
+relationship rel_06
+	fromColumn: Fact_Paros.fecha
+	toColumn: Dim_Fecha.fecha
+
+relationship rel_07
+	fromColumn: Fact_Paros.maquina_id
+	toColumn: Dim_Maquina.maquina_id
+
+relationship rel_08
+	fromColumn: Fact_Paros.turno_id
+	toColumn: Dim_Turno.turno_id
+
+relationship rel_09
+	fromColumn: Fact_Paros.operario_id
+	toColumn: Dim_Operaria.operario_id
+
+relationship rel_10
+	fromColumn: Fact_Paros.referencia_id
+	toColumn: Dim_Referencia.referencia_id
+
+relationship rel_11
+	fromColumn: Fact_Paros.motivo_id
+	toColumn: Dim_MotivoParo.motivo_id
+
+relationship rel_12
+	fromColumn: Fact_HorasNoProgramadas.fecha
+	toColumn: Dim_Fecha.fecha
+
+relationship rel_13
+	fromColumn: Fact_HorasNoProgramadas.maquina_id
+	toColumn: Dim_Maquina.maquina_id
+
