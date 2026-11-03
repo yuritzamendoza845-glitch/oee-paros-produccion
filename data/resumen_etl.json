@@ -1,0 +1,27 @@
+{
+  "filas_leidas": 8208,
+  "filas_vacias_omitidas": 232,
+  "registros_validos": 7965,
+  "detalles_de_paro": 16504,
+  "rechazos_ERROR": 11,
+  "advertencias": 46,
+  "por_regla": {
+    "R05_PACAS_FUERA_DE_RANGO": 11,
+    "R06_PAROS_EXCEDEN_TURNO": 3,
+    "R07_POSIBLE_DUPLICADO": 43
+  },
+  "calidad_dato": {
+    "OK": 7919,
+    "POSIBLE_DUPLICADO": 43,
+    "REVISAR": 3
+  },
+  "tipo_registro": {
+    "PRODUCCION": 4748,
+    "COMPLEMENTO_PAROS": 3217
+  },
+  "rango_fechas": [
+    "2022-01-01",
+    "2025-03-28"
+  ],
+  "metas_estimadas": 39
+}
