@@ -16,11 +16,9 @@ En la línea de vinilos y témperas, los paros de las máquinas se anotan a mano
 | `sql/` | Esquema, catálogos, triggers, procedimientos almacenados y vistas del OEE |
 | `etl/` | Proceso en Python que lee el Excel, lo limpia, lo valida y lo carga sin duplicados |
 | `grafana/` | Tablero operativo y alertas |
-| `powerbi/` | Proyecto de Power BI listo para abrir (`OEE.pbip`, datos incluidos en el modelo, sin configurar rutas), con medidas DAX y 3 páginas; incluye también las consultas de Power Query originales para PostgreSQL |
+| `powerbi/` | Consultas de Power Query y medidas DAX |
 | `tests/` | Pruebas del proceso ETL |
-| `docs/` | Informe completo del trabajo y documentación técnica |
-| `data/processed/` | Salidas del ETL en modo de prueba y OEE de referencia (CSV) |
-| `docker-compose.yml` | Levanta PostgreSQL y Grafana con todo precargado |
+| `docs/` | Informe completo del trabajo |
 
 ## Resultados principales
 
@@ -36,14 +34,6 @@ En la línea de vinilos y témperas, los paros de las máquinas se anotan a mano
 createdb oee
 psql -d oee -v ON_ERROR_STOP=1 -f database/base_datos_oee_postgres.sql
 ```
-
-**Ver el tablero de Grafana con Docker (lo más rápido):**
-
-```bash
-docker compose up -d
-```
-
-Abra http://localhost:3000 (usuario `admin`, clave `admin`) y entre al tablero *oee-operativo* de la carpeta *Planta Vinilos*. Cambie el rango de tiempo a **2022-01-01 → 2025-03-28**, porque los datos terminan en marzo de 2025.
 
 **Probar el proceso ETL sin tocar la base de datos:**
 
@@ -66,4 +56,4 @@ El documento completo está en [`docs/Documentacion_OEE_Paros_Produccion.docx`](
 
 - La meta de producción por hora se estimó a partir de los datos, porque el libro no la guarda.
 - La Calidad se asume en 100 %, porque no hay registro de producto no conforme.
-- Los scripts de SQL y el tablero de Grafana deben probarse en un entorno real. Las medidas y datos del proyecto de Power BI se contrastaron con las cifras de referencia, pero sus gráficos conviene revisarlos en Power BI Desktop.
+- Los scripts de SQL, el tablero de Grafana y las medidas de Power BI deben probarse en un entorno real.

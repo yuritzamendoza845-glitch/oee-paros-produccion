@@ -35,16 +35,16 @@ import numpy as np
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).parent))
-import reglas as R  # noqa: E402
+import reglas as R  
 
 log = logging.getLogger("etl_paros")
 
 HOJA = "Base De Datos"
-FILA_ENCABEZADO = 8                  # índice 0-based => fila 9 de Excel
+FILA_ENCABEZADO = 8                  
 PRIMERA_FILA_DATOS_EXCEL = 10
 N_CODIGOS = 18
-TOLERANCIA_MIN = 5                   # minutos de holgura al comparar paros vs. tiempo del turno
-MAX_PACAS_HORA = 400                 # por encima => unidad distinta (unidades sueltas, no pacas)
+TOLERANCIA_MIN = 5                   
+MAX_PACAS_HORA = 400                 
 
 COL = {
     "fecha": "Fecha", "maquina": "Maquina", "operario": "Operario", "referencia": "Referencia",
@@ -56,17 +56,17 @@ COL = {
 }
 
 
-# ----------------------------------------------------------------------------- extracción
+
 def extraer(archivo: Path) -> pd.DataFrame:
     df = pd.read_excel(archivo, sheet_name=HOJA, header=FILA_ENCABEZADO, engine="openpyxl")
     df.columns = [str(c).replace("\n", " ").strip() for c in df.columns]
-    # normaliza nombres con salto de línea del encabezado original
+   
     df = df.rename(columns={c: c for c in df.columns})
     df["fila_origen"] = np.arange(len(df)) + PRIMERA_FILA_DATOS_EXCEL
     return df
 
 
-# --------------------------------------------------------------------------- transformación
+
 def _txt(v):
     return R.norm_texto(None if (v is None or (isinstance(v, float) and np.isnan(v))) else v)
 
@@ -100,7 +100,7 @@ def transformar(df: pd.DataFrame, archivo: str):
         horas_no = r.get(COL["horas_no"])
         horas_no = None if pd.isna(horas_no) else float(horas_no)
 
-        # ---- filas sin información útil
+        
         if pd.isna(fecha) and maquina is None:
             vacias += 1
             continue
@@ -108,7 +108,7 @@ def transformar(df: pd.DataFrame, archivo: str):
             vacias += 1
             continue
 
-        # ---- reglas duras (rechazan la fila)
+       
         if pd.isna(fecha) or fecha > hoy or fecha.year < 2020:
             rechazar("R01_FECHA_INVALIDA", "ERROR", f"fecha={r.get(COL['fecha'])}")
             continue
@@ -150,7 +150,7 @@ def transformar(df: pd.DataFrame, archivo: str):
                      f"paros={total_min:.0f} min > turno={horas * 60:.0f} min (se carga marcado REVISAR)")
         tipo_registro = "PRODUCCION" if (horas or pacas) else "COMPLEMENTO_PAROS"
 
-        # ---- hash idempotente (contenido completo + secuencia de duplicados exactos)
+        
         partes = [fecha.date(), maquina, turno, operario, referencia, pacas, horas, horas_no,
                   tp[0] if tp else None, *[minutos[n] for n in range(1, N_CODIGOS + 1)],
                   _txt(r.get(COL["sub1"])), _txt(r.get(COL["sub3"])), _txt(r.get(COL["sub5"]))]
@@ -170,7 +170,7 @@ def transformar(df: pd.DataFrame, archivo: str):
             observacion=_txt(r.get(COL["obs"])), observacion_paro=_txt(r.get(COL["obs_paro"])),
             tipo_registro=tipo_registro, calidad_dato=calidad))
 
-        # ---- detalle de paros (des-pivot de los 18 códigos)
+       
         for n, mins in minutos.items():
             if mins <= 0:
                 continue
@@ -192,7 +192,7 @@ def transformar(df: pd.DataFrame, archivo: str):
     return reg, paros, rechazos
 
 
-# ------------------------------------------------------------------------- meta de producción
+
 def estimar_metas(reg: pd.DataFrame, paros: pd.DataFrame, p: float = 0.90, min_n: int = 10) -> pd.DataFrame:
     """Meta de pacas/hora = percentil 90 del ritmo observado en tiempo operativo (mejor ritmo
     demostrado). Es un SUSTITUTO documentado de la meta oficial (columna 'Meta por hora' del
@@ -217,7 +217,7 @@ def estimar_metas(reg: pd.DataFrame, paros: pd.DataFrame, p: float = 0.90, min_n
     return pd.DataFrame(out)
 
 
-# ----------------------------------------------------------------------------------- carga
+
 def _py(v):
     """numpy/pandas -> tipos nativos de Python (psycopg2 no adapta numpy.int64) y NaN -> None."""
     if v is None or (not isinstance(v, str) and pd.isna(v)):
@@ -263,7 +263,8 @@ def cargar_a_postgres(reg, paros, rechazos, metas, archivo: Path, reemplazar_des
                 cur.executemany("SELECT etl.fn_upsert_meta_estimada(%s, %s, %s)",
                                 [(m.maquina, _py(m.referencia), float(m.meta_pacas_hora)) for m in metas.itertuples()])
             log.info("Lote %s cargado.", lote)
-    except Exception as exc:                                    # registra la falla y re-lanza
+    except Exception as exc:                                    
+
         conn.rollback()
         with conn, conn.cursor() as cur:
             cur.execute("SELECT etl.fn_registrar_error(%s, %s)", (archivo.name, str(exc)[:2000]))
@@ -272,7 +273,7 @@ def cargar_a_postgres(reg, paros, rechazos, metas, archivo: Path, reemplazar_des
         conn.close()
 
 
-# -------------------------------------------------------------------------------------- main
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--archivo", required=True, type=Path)
